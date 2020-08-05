@@ -3,35 +3,55 @@ import React from 'react';
 import whatsapp from '../../assets/images/icons/whatsapp.svg';
 
 import './styles.css';
+import api from '../../services/api';
 
-const TeacherItem: React.FC = () => {
+export interface ITeacher{
+    avatar: string;
+    bio: string;
+    cost: number;
+    id: number;
+    name: string;
+    subject: string;
+    user_id: string;
+    whatsapp: string;
+}
+
+const TeacherItem: React.FC<{ teacher: ITeacher }> = ({ teacher }) => {
+    const createNewConnection = async () => {
+        try {
+            await api.post('/connections', {
+                user_id: teacher.user_id
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <article className="teacher-item">
             <header>
-                <img src="https://avatars0.githubusercontent.com/u/38353761?s=460&u=4a5dac6cd588c47b48620feafcb810b8a4e635ec&v=4" alt="Raul Rosá"/>
+                <img src={teacher.avatar} alt={teacher.name} />
 
                 <div>
                     <strong>
-                        Raul Rosá
+                        {teacher.name}
                     </strong>
-                    <span>História</span>
+                    <span>{teacher.subject}</span>
                 </div>
             </header>
             <p>
-                Gosta muito da história do passado.
-                <br/>
-                Se você quer aprender sobre o passado e o futuro, venha ter uma aula comigo. Não que você saberá de algo, mas será uma experiência interessante.
+                {teacher.bio}
             </p>
 
             <footer>
                 <p>
                     Preço/hora
-                    <strong>R$ 48,00</strong>
+                    <strong>R$ {teacher.cost}</strong>
                 </p>
-                <button type="button">
+                <a onClick={() => createNewConnection()} href={`https://wa.me/${teacher.whatsapp}`} rel="noopener noreferrer" target="_blank">
                     <img src={whatsapp} alt="Whatsapp"/>
                     Entrar em contato
-                </button>
+                </a>
             </footer>
         </article>
     );
