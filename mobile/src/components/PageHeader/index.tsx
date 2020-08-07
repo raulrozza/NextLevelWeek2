@@ -11,9 +11,15 @@ import styles from './styles';
 
 interface PageHeaderProps {
   title: string;
+  headerRight?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({
+  title,
+  headerRight,
+  children,
+}) => {
   const { navigate } = useNavigation();
 
   const handleGoBack = () => {
@@ -30,13 +36,20 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
         <Image source={logo} resizeMode="contain" />
       </View>
 
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{title}</Text>
+        {headerRight}
+      </View>
+
+      {children}
     </View>
   );
 };
 
 PageHeader.propTypes = {
   title: PropTypes.string.isRequired,
+  headerRight: PropTypes.node,
+  children: PropTypes.node,
 };
 
 export default PageHeader;

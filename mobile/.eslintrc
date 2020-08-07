@@ -33,7 +33,8 @@
             "arrowParens": "avoid"
         }
       ],
-      "camelcase": 0
+      "camelcase": 0,
+      "no-unused-vars": 0
     }
 }
 
